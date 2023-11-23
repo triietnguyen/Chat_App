@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@android:color/white" /> <!-- Màu nền của button -->
+    <item android:right="2dp" android:left="2dp" android:top="2dp" android:bottom="2dp">
+        <shape android:shape="rectangle">
+            <corners android:radius="8dp" /> <!-- Điều chỉnh độ cong của góc -->
+            <solid android:color="#D2E0FB" /> <!-- Màu của nền button -->
+        </shape>
+    </item>
+</layer-list>
