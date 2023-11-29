@@ -6,9 +6,10 @@ import android.widget.Toast;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 import androidx.databinding.ObservableField;
-import androidx.databinding.library.baseAdapters.BR;
+//import androidx.databinding.library.baseAdapters.BR;
 
 
+import com.example.demomvvm.BR;
 import com.example.demomvvm.view.HelloWorld;
 
 import com.example.demomvvm.model.User;

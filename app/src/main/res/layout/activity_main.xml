@@ -41,12 +41,12 @@
             android:inputType="textPassword"
             />
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{LoginViewModel.messageLogin}"
-            android:layout_gravity="center"
-            android:textSize="18dp"
-            android:layout_marginTop="30dp"></TextView>
+                android:layout_width="1dp"
+                android:layout_height="wrap_content"
+                android:text="@{LoginViewModel.messageLogin}"
+                android:layout_gravity="center"
+                android:textSize="18dp"
+                android:layout_marginTop="30dp"></TextView>
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
