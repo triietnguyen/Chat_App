@@ -16,6 +16,9 @@
         <activity android:name=".view.HelloWorld"
             android:exported="false">
         </activity>
+        <activity android:name=".view.MessagesActivity"
+            android:exported="false">
+        </activity>
         <activity
             android:name=".view.MainActivity"
             android:exported="true">
