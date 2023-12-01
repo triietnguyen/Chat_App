@@ -10,7 +10,7 @@ import androidx.databinding.ObservableField;
 
 
 import com.example.demomvvm.BR;
-import com.example.demomvvm.view.HelloWorld;
+import com.example.demomvvm.view.ProfileActivity;
 
 import com.example.demomvvm.model.User;
 
@@ -37,14 +37,14 @@ public class LoginViewModel extends BaseObservable {
         notifyPropertyChanged(BR.password);
     }
 
-    public void onClickLogin(Context context){
-        User user = new User(getEmail(),getPassword());
-        if(user.isValidEmail() && user.isValidPassword()){
-            Intent intent = new Intent(context, HelloWorld.class);
-            context.startActivity(intent);
-            Toast.makeText(context, "Hello Page", Toast.LENGTH_SHORT).show();
-        }else{
-            messageLogin.set("Email or password INVALID");
-        }
-    }
+//    public void onClickLogin(Context context){
+//        User user = new User(getEmail(),getPassword());
+//        if(user.isValidEmail() && user.isValidPassword()){
+//            Intent intent = new Intent(context, ProfileActivity.class);
+//            context.startActivity(intent);
+//            Toast.makeText(context, "Hello Page", Toast.LENGTH_SHORT).show();
+//        }else{
+//            messageLogin.set("Email or password INVALID");
+//        }
+//    }
 }
