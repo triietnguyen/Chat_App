@@ -1,4 +1,4 @@
-package com.example.demomvvm.view;
+package com.example.demomvvm.View;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.demomvvm.R;
@@ -43,7 +42,7 @@ public class ProfileActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        startActivity(new Intent(ProfileActivity.this, MainActivity.class));
+                        startActivity(new Intent(ProfileActivity.this, SignInActivity.class));
                         finish();
                     }
                 });

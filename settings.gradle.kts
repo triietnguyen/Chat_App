@@ -13,6 +13,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "DemoMVVM"
+rootProject.name = "Chat App"
 include(":app")
  
