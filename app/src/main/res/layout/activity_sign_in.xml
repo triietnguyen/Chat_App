@@ -4,20 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".View.SignInActivity">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
             android:background="@drawable/chatapp_background"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="45dp"
                 android:gravity="center"
                 android:orientation="horizontal">
 
@@ -42,7 +38,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:layout_marginVertical="80dp"
+                android:layout_marginVertical="50dp"
                 android:layout_gravity="center"
                 android:orientation="horizontal">
 
@@ -112,7 +108,7 @@
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginTop="@dimen/_10sdp"
                 android:animateLayoutChanges="true">
                 <Button
                     android:id="@+id/btn_Sigin"
@@ -139,9 +135,9 @@
                 <Button
                     android:id="@+id/btnGoogleAuth"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:background="@drawable/buttonborder"
-                    android:text="Login with Google "
+                    android:text="Login with "
                     android:textColor="@color/black"
                     android:textSize="25sp"
                     app:backgroundTint="@color/white" />
@@ -151,43 +147,11 @@
                     android:layout_height="45dp"
                     android:src="@drawable/google"
                     android:contentDescription="Google Image"
-                    android:layout_marginStart="300dp"
+                    android:layout_marginStart="250dp"
                     android:layout_marginVertical="5dp" />
 
 
             </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <LinearLayout
-                    android:id="@+id/bottomLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:layout_marginTop="85dp"
-                    android:layout_alignParentBottom="true"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="20sp"
-                        android:text="Don’t have account?"
-                        android:layout_marginEnd="10dp"
-                        android:textColor="@color/white" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="20sp"
-                        android:text="Sign up"
-                        android:background="@drawable/underline"
-                        android:textColor="@color/white" />
-                </LinearLayout>
-            </RelativeLayout>
         </LinearLayout>
-    </ScrollView>
 
 </layout>

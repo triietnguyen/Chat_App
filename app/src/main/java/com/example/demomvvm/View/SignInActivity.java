@@ -45,14 +45,14 @@ public class SignInActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         preferenceManager = new PreferenceManager(getApplicationContext());
-//        if(preferenceManager.getBoolean(Constants.KEY_IS_SIGNED_IN)){
-//            Intent intent = new Intent(getApplicationContext(), MessagesActivity.class);
-//            startActivity(intent);
-//            finish();
-//        }
+        if(preferenceManager.getBoolean(Constants.KEY_IS_SIGNED_IN)){
+            Intent intent = new Intent(getApplicationContext(), MessagesActivity.class);
+            startActivity(intent);
+            finish();
+        }
         binding = ActivitySignInBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        ConnectFirebase();
+//        ConnectFirebase();
         setListeners();
     }
 
@@ -81,7 +81,12 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
 
-        binding.btnGoogleAuth.setOnClickListener(v -> googleSignIn());
+        binding.btnGoogleAuth.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                googleSignIn();
+            }
+        });
 
     }
 

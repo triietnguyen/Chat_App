@@ -15,15 +15,23 @@
         android:theme="@style/Theme.DemoMVVM"
         tools:targetApi="31">
         <activity
-            android:name=".View.SignUpActivity"
+            android:name=".View.ChatActivity"
             android:windowSoftInputMode="adjustResize"
             android:exported="false" />
         <activity
+            android:name=".View.UsersActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".View.SignUpActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
             android:name=".View.ProfileActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".View.MessagesActivity"
-            android:exported="false"></activity>
+            android:exported="false" />
         <activity
             android:name=".View.SignInActivity"
             android:exported="true"
@@ -34,11 +42,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <service
             android:name=".firebase.MessagingService"
             android:exported="false">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
     </application>
