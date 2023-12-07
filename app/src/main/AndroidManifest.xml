@@ -30,7 +30,7 @@
             android:name=".View.ProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".View.MessagesActivity"
+            android:name=".View.MainActivity"
             android:exported="false" />
         <activity
             android:name=".View.SignInActivity"

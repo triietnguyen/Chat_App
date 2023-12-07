@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/chatapp_background"
     android:orientation="vertical"
-    tools:context=".View.MessagesActivity">
+    tools:context=".View.MainActivity">
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/img_profile"

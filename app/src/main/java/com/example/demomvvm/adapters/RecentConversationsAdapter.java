@@ -10,15 +10,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.demomvvm.Model.ChatMessage;
+import com.example.demomvvm.Model.User;
 import com.example.demomvvm.databinding.ItemContainerRecentConversionBinding;
+import com.example.demomvvm.listeners.ConversionListener;
 
 import java.util.List;
 
 public class RecentConversationsAdapter extends RecyclerView.Adapter<RecentConversationsAdapter.ConversionViewHolder>{
     private final List<ChatMessage> chatMessages;
+    private  final ConversionListener conversionListener;
 
-    public RecentConversationsAdapter(List<ChatMessage> chatMessages) {
+    public RecentConversationsAdapter(List<ChatMessage> chatMessages, ConversionListener conversionListener) {
         this.chatMessages = chatMessages;
+        this.conversionListener = conversionListener;
     }
 
     @NonNull
@@ -42,9 +46,10 @@ public class RecentConversationsAdapter extends RecyclerView.Adapter<RecentConve
     public int getItemCount() {
         return chatMessages.size();
     }
-
     class ConversionViewHolder extends RecyclerView.ViewHolder{
+
         ItemContainerRecentConversionBinding binding;
+
         ConversionViewHolder(ItemContainerRecentConversionBinding itemContainerRecentConversionBinding){
             super(itemContainerRecentConversionBinding.getRoot());
             binding = itemContainerRecentConversionBinding;
@@ -53,6 +58,13 @@ public class RecentConversationsAdapter extends RecyclerView.Adapter<RecentConve
             binding.imageProfile.setImageBitmap(getConversionImage(chatMessage.conversionImage));
             binding.textName.setText(chatMessage.conversionName);
             binding.textRecentMessage.setText(chatMessage.message);
+            binding.getRoot().setOnClickListener(v -> {
+                User user = new User();
+                user.id = chatMessage.conversionId;
+                user.name = chatMessage.conversionName;
+                user.image = chatMessage.conversionImage;
+                conversionListener.onConversionListener(user);
+            });
         }
     }
     private Bitmap getConversionImage(String encodedImage){
