@@ -61,5 +61,10 @@ dependencies {
     //Round ImageView
     implementation ("com.makeramen:roundedimageview:2.3.0")
 
+    //MultiDex
     implementation("androidx.multidex:multidex:2.0.1")
+
+    //Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
 }
