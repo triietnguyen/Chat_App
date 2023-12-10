@@ -3,6 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".View.SignInActivity">
+    <data>
+        <variable
+            name="SignInViewModel"
+            type="com.example.demomvvm.viewmodel.SignInViewModel" />
+    </data>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -79,6 +84,7 @@
                     android:layout_marginBottom="20dp"
                     app:backgroundTint="#AAB8C2"
                     android:hint="Email"
+                    android:text="@={SignInViewModel.email}"
                     android:textSize="25sp"
                     android:textColorHint="@color/white"
                     android:inputType="textEmailAddress" />
@@ -91,6 +97,7 @@
                     app:backgroundTint="#AAB8C2"
                     android:hint="Password"
                     android:imeOptions="actionDone"
+                    android:text="@={SignInViewModel.password}"
                     android:importantForAutofill="no"
                     android:textSize="25dp"
                     android:layout_marginBottom="10dp"
@@ -116,6 +123,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/loginbtnborder"
                     app:backgroundTint="@null"
+                    android:onClick="@{()->SignInViewModel.onSignInButtonClick(context)}"
                     android:layout_marginVertical="15dp"
                     android:layout_marginHorizontal="20dp"
                     android:text="Login"
@@ -125,7 +133,8 @@
                     android:layout_width="@dimen/_25sdp"
                     android:layout_height="@dimen/_25sdp"
                     android:layout_gravity="center"
-                    android:visibility="invisible"/>
+                    android:visibility="invisible"
+                    />
             </FrameLayout>
             <RelativeLayout
                 android:layout_width="match_parent"
