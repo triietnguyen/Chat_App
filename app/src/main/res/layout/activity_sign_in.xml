@@ -157,7 +157,7 @@
                     android:layout_height="45dp"
                     android:src="@drawable/google"
                     android:contentDescription="Google Image"
-                    android:layout_marginStart="300dp"
+                    android:layout_marginStart="320dp"
                     android:layout_marginVertical="5dp" />
             </RelativeLayout>
         </LinearLayout>
