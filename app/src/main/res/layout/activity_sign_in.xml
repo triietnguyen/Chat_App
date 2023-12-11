@@ -146,7 +146,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/buttonborder"
-                    android:text="Sign In "
+                    android:text="Sign in with Google"
                     android:textColor="@color/black"
                     android:textSize="25sp"
                     app:backgroundTint="@color/white" />
@@ -156,7 +156,7 @@
                     android:layout_height="45dp"
                     android:src="@drawable/google"
                     android:contentDescription="Google Image"
-                    android:layout_marginStart="110dp"
+                    android:layout_marginStart="300dp"
                     android:layout_marginVertical="5dp" />
 
 
