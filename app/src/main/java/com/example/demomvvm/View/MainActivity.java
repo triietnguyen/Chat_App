@@ -12,7 +12,7 @@ import android.widget.Toast;
 import com.example.demomvvm.Model.ChatMessage;
 import com.example.demomvvm.Model.User;
 import com.example.demomvvm.adapters.RecentConversationsAdapter;
-import com.example.demomvvm.databinding.ActivityMessageslistBinding;
+import com.example.demomvvm.databinding.ActivityMainBinding;
 import com.example.demomvvm.listeners.ConversionListener;
 import com.example.demomvvm.utilities.Constants;
 import com.example.demomvvm.utilities.PreferenceManager;
@@ -33,7 +33,7 @@ import java.util.List;
 public class MainActivity extends BaseActivity implements ConversionListener {
     private GoogleSignInClient mGoogleSignInClient;
 
-    private ActivityMessageslistBinding binding;
+    private ActivityMainBinding binding;
     private PreferenceManager preferenceManager;
     private List<ChatMessage> conversation;
     private RecentConversationsAdapter conversationsAdapter;
@@ -42,7 +42,7 @@ public class MainActivity extends BaseActivity implements ConversionListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityMessageslistBinding.inflate(getLayoutInflater());
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         preferenceManager = new PreferenceManager(getApplicationContext());
         init();

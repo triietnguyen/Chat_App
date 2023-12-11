@@ -126,7 +126,7 @@
                     android:onClick="@{()->SignInViewModel.onSignInButtonClick(context)}"
                     android:layout_marginVertical="15dp"
                     android:layout_marginHorizontal="20dp"
-                    android:text="Login"
+                    android:text="Sign In"
                     android:textSize="25sp"></Button>
                 <ProgressBar
                     android:id="@+id/progressBar"
@@ -137,7 +137,7 @@
                     />
             </FrameLayout>
             <RelativeLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="20dp"
                 >
@@ -146,7 +146,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/buttonborder"
-                    android:text="Login with "
+                    android:text="Sign In "
                     android:textColor="@color/black"
                     android:textSize="25sp"
                     app:backgroundTint="@color/white" />
@@ -156,7 +156,7 @@
                     android:layout_height="45dp"
                     android:src="@drawable/google"
                     android:contentDescription="Google Image"
-                    android:layout_marginStart="250dp"
+                    android:layout_marginStart="110dp"
                     android:layout_marginVertical="5dp" />
 
 

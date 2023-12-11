@@ -98,6 +98,7 @@ public class ChatActivity extends BaseActivity {
             addConversion(conversion);
         }
         if (!isReceiverAvailable) {
+
             try {
                 JSONArray tokens = new JSONArray();
                 tokens.put(receiverUser.token);
@@ -114,6 +115,7 @@ public class ChatActivity extends BaseActivity {
 
                 sendNotification(body.toString());
             } catch (Exception exception) {
+
                 showToast(exception.getMessage());
             }
         }
@@ -133,6 +135,7 @@ public class ChatActivity extends BaseActivity {
             @Override
             public void onResponse(@Nonnull Call<String> call, @Nonnull Response<String> response) {
                 if (response.isSuccessful()) {
+
                     try {
                         if (response.body() != null) {
                             JSONObject responseJson = new JSONObject(response.body());
