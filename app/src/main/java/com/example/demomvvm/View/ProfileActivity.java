@@ -71,7 +71,6 @@ public class ProfileActivity extends AppCompatActivity {
                     }
                 });
     }
-
     private void Handle() {
         binding.btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -11,6 +11,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.demomvvm.View.MainActivity;
+import com.example.demomvvm.View.SignUpActivity;
 import com.example.demomvvm.utilities.Constants;
 import com.example.demomvvm.utilities.PreferenceManager;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -27,6 +28,10 @@ public class SignInViewModel extends ViewModel {
 
     public LiveData<Boolean> getButtonVisible() {
         return buttonVisible;
+    }
+    public void onSignUpButtonClick(Context context){
+        Intent intent = new Intent(context, SignUpActivity.class);
+        context.startActivity(intent);
     }
 
     public void onSignInButtonClick(Context context) {
@@ -80,6 +85,8 @@ public class SignInViewModel extends ViewModel {
             return true;
         }
     }
+
+
 }
 
 
