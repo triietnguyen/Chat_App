@@ -52,14 +52,14 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.android.gms:play-services-auth:20.7.0")
-    implementation ("com.google.firebase:firebase-auth:22.3.0")
+    implementation("com.google.firebase:firebase-auth:22.3.0")
 
     //Scalable Size Unit (support for different screen sizes)
-    implementation ("com.intuit.sdp:sdp-android:1.0.6")
-    implementation ("com.intuit.ssp:ssp-android:1.0.6")
+    implementation("com.intuit.sdp:sdp-android:1.0.6")
+    implementation("com.intuit.ssp:ssp-android:1.0.6")
 
     //Round ImageView
-    implementation ("com.makeramen:roundedimageview:2.3.0")
+    implementation("com.makeramen:roundedimageview:2.3.0")
 
     //MultiDex
     implementation("androidx.multidex:multidex:2.0.1")
@@ -67,4 +67,8 @@ dependencies {
     //Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
+
+    //Glide
+    implementation ("com.github.bumptech.glide:glide:4.12.0")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
 }

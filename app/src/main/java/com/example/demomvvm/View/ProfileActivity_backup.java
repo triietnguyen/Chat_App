@@ -24,7 +24,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity_backup extends AppCompatActivity {
     GoogleSignInClient mGoogleSignInClient;
     private PreferenceManager preferenceManager;
     private ActivityProfileBinding binding;
@@ -44,7 +44,6 @@ public class ProfileActivity extends AppCompatActivity {
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         Handle();
-        loadProfilePicture();
     }
 
     private void showToast(String message) {
@@ -98,12 +97,12 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
         binding.imageBack.setOnClickListener(new View.OnClickListener() {
-                                                 @Override
-                                                 public void onClick(View v) {
-                                                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                                                     finish();
-                                                 }
-                                             }
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                finish();
+            }
+        }
         );
     }
 }
