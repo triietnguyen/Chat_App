@@ -9,13 +9,19 @@ import android.util.Base64;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.example.demomvvm.Model.ChatMessage;
 import com.example.demomvvm.Model.User;
+import com.example.demomvvm.R;
 import com.example.demomvvm.adapters.RecentConversationsAdapter;
 import com.example.demomvvm.databinding.ActivityMainBinding;
 import com.example.demomvvm.listeners.ConversionListener;
 import com.example.demomvvm.utilities.Constants;
 import com.example.demomvvm.utilities.PreferenceManager;
+import com.example.demomvvm.viewmodel.MainViewModel;
+import com.example.demomvvm.viewmodel.SignInViewModel;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
@@ -38,17 +44,21 @@ public class MainActivity extends BaseActivity implements ConversionListener {
     private List<ChatMessage> conversation;
     private RecentConversationsAdapter conversationsAdapter;
     private FirebaseFirestore database;
+    private MainViewModel viewModel;
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        viewModel = new ViewModelProvider(this).get(MainViewModel.class);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        binding.setMainViewModel(viewModel);
+        binding.setLifecycleOwner(this); // Để theo dõi thay đổi LiveData
         preferenceManager = new PreferenceManager(getApplicationContext());
         init();
         loadUserDetails();
-        getToken();
-        Handle();
+        viewModel.getToken(preferenceManager,getApplicationContext());
+//        Handle();
         listenConversations();
     }
     private void init(){
@@ -141,24 +151,6 @@ public class MainActivity extends BaseActivity implements ConversionListener {
                 );
         documentReference.update(Constants.KEY_FCM_TOKEN,token)
                 .addOnFailureListener(e-> showToast("Unable to update token"));
-    }
-
-    private void signOut(){
-        showToast("Signing out...");
-        FirebaseFirestore database = FirebaseFirestore.getInstance();
-        DocumentReference documentReference =
-                database.collection(Constants.KEY_COLLECTION_USERS).document(
-                        preferenceManager.getString(Constants.KEY_USER_ID)
-                );
-        HashMap<String, Object> updates = new HashMap<>();
-        updates.put(Constants.KEY_FCM_TOKEN, FieldValue.delete());
-        documentReference.update(updates)
-                .addOnSuccessListener(unused -> {
-                    preferenceManager.clear();
-                    startActivity(new Intent(getApplicationContext(),SignInActivity.class));
-                    finish();
-                })
-                .addOnFailureListener(e->showToast("Unable to sign out"));
     }
 
     private void Handle(){

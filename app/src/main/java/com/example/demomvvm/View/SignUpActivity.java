@@ -3,6 +3,8 @@ package com.example.demomvvm.View;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -19,6 +21,8 @@ import com.example.demomvvm.R;
 import com.example.demomvvm.databinding.ActivitySignUpBinding;
 import com.example.demomvvm.utilities.Constants;
 import com.example.demomvvm.utilities.PreferenceManager;
+import com.example.demomvvm.viewmodel.SignInViewModel;
+import com.example.demomvvm.viewmodel.SignUpViewModel;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.ByteArrayOutputStream;
@@ -30,61 +34,52 @@ import java.util.regex.Pattern;
 public class SignUpActivity extends AppCompatActivity {
     private ActivitySignUpBinding binding;
     private PreferenceManager preferenceManager;
-    private String encodedImage;
-
+    public String encodedImage;
+    private SignUpViewModel viewModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivitySignUpBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        viewModel = new ViewModelProvider(this).get(SignUpViewModel.class);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_sign_up);
+        binding.setSignUpViewModel(viewModel);
+        binding.setLifecycleOwner(this);
         preferenceManager = new PreferenceManager(getApplicationContext());
+        // Theo dõi LiveData để cập nhật trạng thái của ProgressBar
+        viewModel.getProgressBarVisible().observe(this, isVisible -> {
+            if (isVisible) {
+                binding.progressBar.setVisibility(View.VISIBLE);
+            } else {
+                binding.progressBar.setVisibility(View.INVISIBLE);
+            }
+        });
+
+        // Theo dõi LiveData để cập nhật trạng thái của Nút Button
+        viewModel.getButtonVisible().observe(this, isVisible -> {
+            if (isVisible) {
+                binding.btnSignup.setVisibility(View.VISIBLE);
+            } else {
+                binding.btnSignup.setVisibility(View.INVISIBLE);
+            }
+        });
         setListeners();
     }
 
     private void setListeners() {
-        binding.btnSigin.setOnClickListener(v ->
-                startActivity(new Intent(getApplicationContext(), SignInActivity.class)));
-        binding.btnSignup.setOnClickListener(v ->{
-            if (isValidSignUpDetails()){
-                signUp();
+        binding.btnSignup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isValidSignUpDetails()){
+                    viewModel.onSignUpButtonClick(getApplicationContext(),encodedImage);
+                }
             }
         });
-        binding.layoutImage.setOnClickListener(v ->{
-            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            pickImage.launch(intent);
-        });
+        binding.layoutImage.setOnClickListener(v -> viewModel.setImage(pickImage));
     }
 
     private void showToast(String message){
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
-    private void signUp(){
-        loading(true);
-        FirebaseFirestore database = FirebaseFirestore.getInstance();
-        HashMap<String, Object> user = new HashMap<>();
-        user.put(Constants.KEY_NAME, binding.inputName.getText().toString());
-        user.put(Constants.KEY_EMAIL, binding.inputEmail.getText().toString());
-        user.put(Constants.KEY_PASSWORD, binding.inputPassword.getText().toString());
-        user.put(Constants.KEY_IMAGE, encodedImage);
-        database.collection(Constants.KEY_COLLECTION_USERS)
-                .add(user)
-                .addOnSuccessListener(documentReference -> {
-                    loading(false);
-                    preferenceManager.putBoolean(Constants.KEY_IS_SIGNED_IN, true);
-                    preferenceManager.putString(Constants.KEY_USER_ID, documentReference.getId());
-                    preferenceManager.putString(Constants.KEY_NAME, binding.inputName.getText().toString());
-                    preferenceManager.putString(Constants.KEY_IMAGE,encodedImage);
-                    Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                })
-                .addOnFailureListener(exception ->{
-                    loading(false);
-                    showToast(exception.getMessage());
-                });
-    }
     private String encodeImage(Bitmap bitmap){
         int previewWidth = 150;
         int previewHeight = bitmap.getHeight() * previewWidth / bitmap.getWidth();
@@ -119,37 +114,27 @@ public class SignUpActivity extends AppCompatActivity {
             showToast("Select profile image");
             return false;
         }
-        else if (binding.inputName.getText().toString().trim().isEmpty()) {
+        else if (viewModel.name.toString().trim().isEmpty()) {
             showToast("Enter name");
             return false;
-        } else if (binding.inputEmail.getText().toString().trim().isEmpty()) {
+        } else if (viewModel.email.toString().trim().isEmpty()) {
             showToast("Enter email");
             return false;
-        } else if (!Patterns.EMAIL_ADDRESS.matcher(binding.inputEmail.getText().toString()).matches()) {
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(viewModel.email.toString()).matches()) {
             showToast("Enter valid email");
             return false;
-        } else if (binding.inputPassword.getText().toString().trim().isEmpty()) {
+        } else if (viewModel.password.toString().trim().isEmpty()) {
             showToast("Enter password");
             return false;
-        } else if (binding.inputConfirmPassword.getText().toString().trim().isEmpty()) {
+        } else if (viewModel.confirm_password.toString().trim().isEmpty()) {
             showToast("Confirm your password");
             return false;
-        } else if (!binding.inputPassword.getText().toString().equals(binding.inputConfirmPassword.getText().toString())) {
+        } else if (!viewModel.password.toString().equals(viewModel.confirm_password.toString())) {
             showToast("Password & confirm password must be same");
             return false;
         }
         else {
             return true;
-        }
-    }
-
-    private void loading(Boolean isLoading){
-        if(isLoading){
-            binding.btnSignup.setVisibility(View.INVISIBLE);
-            binding.progressBar.setVisibility(View.VISIBLE);
-        }else{
-            binding.progressBar.setVisibility(View.INVISIBLE);
-            binding.btnSignup.setVisibility(View.VISIBLE);
         }
     }
 }
