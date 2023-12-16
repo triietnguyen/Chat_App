@@ -39,16 +39,14 @@ public class SignInViewModel extends ViewModel {
             PreferenceManager preferenceManager = new PreferenceManager(context);
             FirebaseFirestore database = FirebaseFirestore.getInstance();
 
-            progressBarVisible.setValue(true); // Hiển thị ProgressBar
-            buttonVisible.setValue(false); // Ẩn Nút Button
+            loading(true);
 
             database.collection(Constants.KEY_COLLECTION_USERS)
                     .whereEqualTo(Constants.KEY_EMAIL, email)
                     .whereEqualTo(Constants.KEY_PASSWORD, password)
                     .get()
                     .addOnCompleteListener(task -> {
-                        progressBarVisible.setValue(false); // Ẩn ProgressBar
-                        buttonVisible.setValue(true); // Hiển thị Nút Button
+                        loading(false);
 
                         if (task.isSuccessful() && task.getResult() != null && task.getResult().getDocuments().size() > 0) {
                             DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
@@ -86,6 +84,15 @@ public class SignInViewModel extends ViewModel {
         }
     }
 
+    private void loading(Boolean isLoading){
+        if(isLoading){
+            progressBarVisible.setValue(true); // Hiển thị ProgressBar
+            buttonVisible.setValue(false); // Ẩn Nút Button
+        }else{
+            progressBarVisible.setValue(false); // Ẩn ProgressBar
+            buttonVisible.setValue(true); // Hiển thị Nút Button
+        }
+    }
 
 }
 
