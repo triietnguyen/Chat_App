@@ -68,18 +68,11 @@ public class SignUpActivity extends AppCompatActivity {
         binding.btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isValidSignUpDetails()){
                     viewModel.onSignUpButtonClick(getApplicationContext(),encodedImage);
-                }
             }
         });
         binding.layoutImage.setOnClickListener(v -> viewModel.setImage(pickImage));
     }
-
-    private void showToast(String message){
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-    }
-
     private String encodeImage(Bitmap bitmap){
         int previewWidth = 150;
         int previewHeight = bitmap.getHeight() * previewWidth / bitmap.getWidth();
@@ -89,7 +82,6 @@ public class SignUpActivity extends AppCompatActivity {
         byte[] bytes = byteArrayOutputStream.toByteArray();
         return Base64.encodeToString(bytes, Base64.DEFAULT);
     }
-
     private final ActivityResultLauncher<Intent> pickImage = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             result -> {
@@ -109,32 +101,4 @@ public class SignUpActivity extends AppCompatActivity {
                 }
             }
     );
-    private boolean isValidSignUpDetails(){
-        if(encodedImage == null){
-            showToast("Select profile image");
-            return false;
-        }
-        else if (viewModel.name.toString().trim().isEmpty()) {
-            showToast("Enter name");
-            return false;
-        } else if (viewModel.email.toString().trim().isEmpty()) {
-            showToast("Enter email");
-            return false;
-        } else if (!Patterns.EMAIL_ADDRESS.matcher(viewModel.email.toString()).matches()) {
-            showToast("Enter valid email");
-            return false;
-        } else if (viewModel.password.toString().trim().isEmpty()) {
-            showToast("Enter password");
-            return false;
-        } else if (viewModel.confirm_password.toString().trim().isEmpty()) {
-            showToast("Confirm your password");
-            return false;
-        } else if (!viewModel.password.toString().equals(viewModel.confirm_password.toString())) {
-            showToast("Password & confirm password must be same");
-            return false;
-        }
-        else {
-            return true;
-        }
-    }
 }

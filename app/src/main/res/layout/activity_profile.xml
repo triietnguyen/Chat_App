@@ -53,20 +53,21 @@
                 <RelativeLayout
                     android:id="@+id/RL_imageView"
                     android:layout_width="match_parent"
+                    android:gravity="center"
                     android:layout_height="wrap_content">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="90dp">
-                        <ImageView
+                        android:layout_marginTop="100dp">
+                        <com.makeramen.roundedimageview.RoundedImageView
                             android:id="@+id/imageViewProfileDp"
-                            android:layout_width="120dp"
-                            android:layout_height="120dp"
-                            android:layout_gravity="center"
+                            android:layout_width="@dimen/_90sdp"
+                            android:layout_height="@dimen/_90sdp"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/user_0" />
+                            app:riv_corner_radius="@dimen/_60sdp"
+                            app:tint="@color/white"/>
                     </LinearLayout>
 
                     <ProgressBar
@@ -162,6 +163,7 @@
                         android:layout_centerVertical="true"
                         android:layout_marginStart="50dp"
                         android:layout_marginTop="20dp"
+                        android:textColor="@color/white"
                         android:textColorHint="@color/white"
                         android:hint="Loading"
                         android:textSize="20sp"/>
@@ -233,7 +235,7 @@
                     android:text="Log out"
                     android:textColor="@color/white"
                     android:textSize="30dp"
-                    app:backgroundTint="#78909C"></Button>
+                    app:backgroundTint="#FF0000"></Button>
             </LinearLayout>
 
         </LinearLayout>

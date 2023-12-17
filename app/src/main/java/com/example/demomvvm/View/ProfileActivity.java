@@ -1,15 +1,18 @@
 package com.example.demomvvm.View;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.bumptech.glide.Glide;
 import com.example.demomvvm.R;
+import com.example.demomvvm.databinding.ActivityMainBinding;
 import com.example.demomvvm.databinding.ActivityProfileBinding;
 import com.example.demomvvm.utilities.Constants;
 import com.example.demomvvm.utilities.PreferenceManager;
@@ -44,27 +47,18 @@ public class ProfileActivity extends AppCompatActivity {
         // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         Handle();
-        loadProfilePicture();
+        loadUserDetails();
     }
 
     private void showToast(String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
-
-    private void loadProfilePicture() {
-        String profilePictureUrl = preferenceManager.getString(Constants.KEY_PROFILE_PICTURE); // Key của URL hình ảnh trong PreferenceManager
-
-        if (profilePictureUrl != null && !profilePictureUrl.isEmpty()) {
-            // Sử dụng Glide để tải và hiển thị hình ảnh từ URL
-            Glide.with(this)
-                    .load(profilePictureUrl)
-                    .placeholder(R.drawable.user_0) // Hình ảnh mặc định nếu không có hình ảnh
-                    .error(R.drawable.user_0) // Hình ảnh mặc định nếu xảy ra lỗi
-                    .into(binding.imageViewProfileDp);
-        } else {
-            // Nếu không có URL hình ảnh, hiển thị hình ảnh mặc định
-            binding.imageViewProfileDp.setImageResource(R.drawable.user_0);
-        }
+    public void loadUserDetails(){
+        binding.textViewFullName.setText(preferenceManager.getString(Constants.KEY_NAME));
+        binding.textViewEmail.setText(preferenceManager.getString(Constants.KEY_EMAIL));
+        byte[] bytes = Base64.decode(preferenceManager.getString(Constants.KEY_IMAGE), Base64.DEFAULT);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
+        binding.imageViewProfileDp.setImageBitmap(bitmap);
     }
 
     private void signOut() {
@@ -90,6 +84,7 @@ public class ProfileActivity extends AppCompatActivity {
                     }
                 });
     }
+
     private void Handle() {
         binding.btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,12 +93,12 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
         binding.imageBack.setOnClickListener(new View.OnClickListener() {
-                                                 @Override
-                                                 public void onClick(View v) {
-                                                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                                                     finish();
-                                                 }
-                                             }
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                finish();
+            }
+        }
         );
     }
 }

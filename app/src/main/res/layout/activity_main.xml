@@ -22,11 +22,10 @@
             android:layout_marginLeft="@dimen/_16sdp"
             android:layout_marginTop="@dimen/_12sdp"
             android:onClick="@{()->MainViewModel.handleProfileImageClick(context)}"
-            android:background="@drawable/background_icon"
-            android:padding="@dimen/_6sdp"
             android:scaleType="centerCrop"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:riv_corner_radius="@dimen/_60sdp"
             app:tint="@color/white"/>
         <TextView
             android:id="@+id/text_name"

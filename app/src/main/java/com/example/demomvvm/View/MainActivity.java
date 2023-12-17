@@ -21,24 +21,19 @@ import com.example.demomvvm.listeners.ConversionListener;
 import com.example.demomvvm.utilities.Constants;
 import com.example.demomvvm.utilities.PreferenceManager;
 import com.example.demomvvm.viewmodel.MainViewModel;
-import com.example.demomvvm.viewmodel.SignInViewModel;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends BaseActivity implements ConversionListener {
-    private GoogleSignInClient mGoogleSignInClient;
-
     private ActivityMainBinding binding;
     private PreferenceManager preferenceManager;
     private List<ChatMessage> conversation;
@@ -56,10 +51,9 @@ public class MainActivity extends BaseActivity implements ConversionListener {
         binding.setLifecycleOwner(this); // Để theo dõi thay đổi LiveData
         preferenceManager = new PreferenceManager(getApplicationContext());
         init();
-        loadUserDetails();
+        viewModel.loadUserDetails(binding, preferenceManager);
         viewModel.getToken(preferenceManager,getApplicationContext());
-//        Handle();
-        listenConversations();
+        viewModel.listenConversations(database,preferenceManager,eventListener);
     }
     private void init(){
         conversation = new ArrayList<>();
@@ -67,27 +61,6 @@ public class MainActivity extends BaseActivity implements ConversionListener {
         binding.conversationsRecyclerView.setAdapter(conversationsAdapter);
         database = FirebaseFirestore.getInstance();
     }
-
-    private void loadUserDetails(){
-        binding.textName.setText(preferenceManager.getString(Constants.KEY_NAME));
-        byte[] bytes = Base64.decode(preferenceManager.getString(Constants.KEY_IMAGE), Base64.DEFAULT);
-        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length);
-        binding.imgProfile.setImageBitmap(bitmap);
-    }
-
-    private void showToast(String message){
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-    }
-
-    private void listenConversations() {
-        database.collection(Constants.KEY_COLLECTION_CONVERSATIONS)
-                .whereEqualTo(Constants.KEY_SENDER_ID, preferenceManager.getString(Constants.KEY_USER_ID))
-                .addSnapshotListener(eventListener);
-        database.collection(Constants.KEY_COLLECTION_CONVERSATIONS)
-                .whereEqualTo(Constants.KEY_RECEIVER_ID, preferenceManager.getString(Constants.KEY_USER_ID))
-                .addSnapshotListener(eventListener);
-    }
-
     private final EventListener<QuerySnapshot> eventListener = (value, error) ->{
         if(error != null)
             return;
@@ -137,36 +110,6 @@ public class MainActivity extends BaseActivity implements ConversionListener {
             }
         }
     };
-
-    private void getToken(){
-        FirebaseMessaging.getInstance().getToken().addOnSuccessListener(this::updateToken);
-    }
-
-    private void updateToken(String token){
-        preferenceManager.putString(Constants.KEY_FCM_TOKEN, token);
-        FirebaseFirestore database = FirebaseFirestore.getInstance();
-        DocumentReference documentReference =
-                database.collection(Constants.KEY_COLLECTION_USERS).document(
-                        preferenceManager.getString(Constants.KEY_USER_ID)
-                );
-        documentReference.update(Constants.KEY_FCM_TOKEN,token)
-                .addOnFailureListener(e-> showToast("Unable to update token"));
-    }
-
-    private void Handle(){
-        binding.imgProfile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-
-        binding.fabNewChat.setOnClickListener(v ->
-                startActivity(new Intent(getApplicationContext(),UsersActivity.class)));
-    }
-
     @Override
     public void onConversionListener(User user) {
         Intent intent = new Intent(getApplicationContext(), ChatActivity.class);

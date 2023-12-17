@@ -57,8 +57,36 @@ public class SignUpViewModel extends ViewModel {
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             pickImage.launch(intent);
     }
+    private boolean isValidSignUpDetails(Context context,String encodedImage ){
+        if(encodedImage == null){
+            showToast("Select profile image",context);
+            return false;
+        }
+        else if (name.toString().trim().isEmpty()) {
+            showToast("Enter name",context);
+            return false;
+        } else if (email.toString().trim().isEmpty()) {
+            showToast("Enter email",context);
+            return false;
+        } else if (!Patterns.EMAIL_ADDRESS.matcher(email.toString()).matches()) {
+            showToast("Enter valid email",context);
+            return false;
+        } else if (password.toString().trim().isEmpty()) {
+            showToast("Enter password",context);
+            return false;
+        } else if (confirm_password.toString().trim().isEmpty()) {
+            showToast("Confirm your password",context);
+            return false;
+        } else if (!password.toString().equals(confirm_password.toString())) {
+            showToast("Password & confirm password must be same",context);
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
     public void onSignUpButtonClick(Context context, String encodedImage){
-//        if(isValidSignUpDetails(context)){
+        if(isValidSignUpDetails(context, encodedImage)){
             loading(true);
             FirebaseFirestore database = FirebaseFirestore.getInstance();
             PreferenceManager preferenceManager = new PreferenceManager(context);
@@ -83,7 +111,7 @@ public class SignUpViewModel extends ViewModel {
                         loading(false);
                         showToast(exception.getMessage(), context);
                     });
-//        }
+        }
     }
     private void loading(Boolean isLoading){
         if(isLoading){

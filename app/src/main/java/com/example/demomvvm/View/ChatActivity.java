@@ -1,9 +1,11 @@
 package com.example.demomvvm.View;
-
+import android.text.TextUtils;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Toast;
 
@@ -75,52 +77,59 @@ public class ChatActivity extends BaseActivity {
         binding.chatRecyclerView.setAdapter(chatAdapter);
         database = FirebaseFirestore.getInstance();
     }
+    private Boolean isValidMessage() {
+        if (TextUtils.isEmpty(binding.inputMessage.getText().toString().trim())) {
+            showToast("Please enter message before sending");
+            return false;
+        } else {
+            return true;
+        }
+    }
 
     private void sendMessage() {
-        HashMap<String, Object> message = new HashMap<>();
-        message.put(Constants.KEY_SENDER_ID, preferenceManager.getString(Constants.KEY_USER_ID));
-        message.put(Constants.KEY_RECEIVER_ID, receiverUser.id);
-        message.put(Constants.KEY_MESSAGE, binding.inputMessage.getText().toString());
-        message.put(Constants.KEY_TIMESTAMP, new Date());
-        database.collection(Constants.KEY_COLLECTION_CHAT).add(message);
-        if (conversionId != null) {
-            updateConversion(binding.inputMessage.getText().toString());
-        } else {
-            HashMap<String, Object> conversion = new HashMap<>();
-            conversion.put(Constants.KEY_SENDER_ID, preferenceManager.getString(Constants.KEY_USER_ID));
-            conversion.put(Constants.KEY_SENDER_NAME, preferenceManager.getString(Constants.KEY_NAME));
-            conversion.put(Constants.KEY_SENDER_IMAGE, preferenceManager.getString(Constants.KEY_IMAGE));
-            conversion.put(Constants.KEY_RECEIVER_ID, receiverUser.id);
-            conversion.put(Constants.KEY_RECEIVER_NAME, receiverUser.name);
-            conversion.put(Constants.KEY_RECEIVER_IMAGE, receiverUser.image);
-            conversion.put(Constants.KEY_LAST_MESSAGE, binding.inputMessage.getText().toString());
-            conversion.put(Constants.KEY_TIMESTAMP, new Date());
-            addConversion(conversion);
-        }
-        if (!isReceiverAvailable) {
-
-            try {
-                JSONArray tokens = new JSONArray();
-                tokens.put(receiverUser.token);
-
-                JSONObject data = new JSONObject();
-                data.put(Constants.KEY_USER_ID, preferenceManager.getString(Constants.KEY_USER_ID));
-                data.put(Constants.KEY_NAME, preferenceManager.getString(Constants.KEY_NAME));
-                data.put(Constants.KEY_FCM_TOKEN, preferenceManager.getString(Constants.KEY_FCM_TOKEN));
-                data.put(Constants.KEY_MESSAGE, binding.inputMessage.getText().toString());
-
-                JSONObject body = new JSONObject();
-                body.put(Constants.REMOTE_MSG_DATA, data);
-                body.put(Constants.REMOTE_MSG_REGISTRATION_IDS, tokens);
-
-                sendNotification(body.toString());
-            } catch (Exception exception) {
-
-                showToast(exception.getMessage());
+            HashMap<String, Object> message = new HashMap<>();
+            message.put(Constants.KEY_SENDER_ID, preferenceManager.getString(Constants.KEY_USER_ID));
+            message.put(Constants.KEY_RECEIVER_ID, receiverUser.id);
+            message.put(Constants.KEY_MESSAGE, binding.inputMessage.getText().toString());
+            message.put(Constants.KEY_TIMESTAMP, new Date());
+            database.collection(Constants.KEY_COLLECTION_CHAT).add(message);
+            if (conversionId != null) {
+                updateConversion(binding.inputMessage.getText().toString());
+            } else {
+                HashMap<String, Object> conversion = new HashMap<>();
+                conversion.put(Constants.KEY_SENDER_ID, preferenceManager.getString(Constants.KEY_USER_ID));
+                conversion.put(Constants.KEY_SENDER_NAME, preferenceManager.getString(Constants.KEY_NAME));
+                conversion.put(Constants.KEY_SENDER_IMAGE, preferenceManager.getString(Constants.KEY_IMAGE));
+                conversion.put(Constants.KEY_RECEIVER_ID, receiverUser.id);
+                conversion.put(Constants.KEY_RECEIVER_NAME, receiverUser.name);
+                conversion.put(Constants.KEY_RECEIVER_IMAGE, receiverUser.image);
+                conversion.put(Constants.KEY_LAST_MESSAGE, binding.inputMessage.getText().toString());
+                conversion.put(Constants.KEY_TIMESTAMP, new Date());
+                addConversion(conversion);
             }
-        }
-        binding.inputMessage.setText(null);
+            if (!isReceiverAvailable) {
 
+                try {
+                    JSONArray tokens = new JSONArray();
+                    tokens.put(receiverUser.token);
+
+                    JSONObject data = new JSONObject();
+                    data.put(Constants.KEY_USER_ID, preferenceManager.getString(Constants.KEY_USER_ID));
+                    data.put(Constants.KEY_NAME, preferenceManager.getString(Constants.KEY_NAME));
+                    data.put(Constants.KEY_FCM_TOKEN, preferenceManager.getString(Constants.KEY_FCM_TOKEN));
+                    data.put(Constants.KEY_MESSAGE, binding.inputMessage.getText().toString());
+
+                    JSONObject body = new JSONObject();
+                    body.put(Constants.REMOTE_MSG_DATA, data);
+                    body.put(Constants.REMOTE_MSG_REGISTRATION_IDS, tokens);
+
+                    sendNotification(body.toString());
+                } catch (Exception exception) {
+
+                    showToast(exception.getMessage());
+                }
+            }
+            binding.inputMessage.setText(null);
     }
 
     private void showToast(String message) {
@@ -245,7 +254,14 @@ public class ChatActivity extends BaseActivity {
 
     private void setListeners() {
         binding.imageBack.setOnClickListener(v -> onBackPressed());
-        binding.layoutSend.setOnClickListener(v -> sendMessage());
+        binding.layoutSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isValidMessage()){
+                    sendMessage();
+                }
+            }
+        });
     }
 
     private String getReadableDateTime(Date date) {
