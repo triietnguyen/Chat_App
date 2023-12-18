@@ -41,7 +41,7 @@ public class SignInActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 1000;
     private SignInViewModel viewModel;
     GoogleSignInClient mGoogleSignInClient;
-
+    Button signInButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +55,33 @@ public class SignInActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_sign_in);
         binding.setSignInViewModel(viewModel);
         binding.setLifecycleOwner(this);
-
+        InitialGoogle();
+        LiveData();
+        AnhXa();
+        signInButton();
+    }
+    private void signInButton(){
+        signInButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signIn();
+            }
+        });
+    }
+    private void AnhXa(){
+        // Set the dimensions of the sign-in button.
+        signInButton = findViewById(R.id.btnGoogleAuth);
+    }
+    private void InitialGoogle(){
+        // Configure sign-in to request the user's ID, email address, and basic
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        // Build a GoogleSignInClient with the options specified by gso.
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+    }
+    private void LiveData(){
         // Theo dõi LiveData để cập nhật trạng thái của ProgressBar
         viewModel.getProgressBarVisible().observe(this, isVisible -> {
             if (isVisible) {
@@ -73,24 +99,6 @@ public class SignInActivity extends AppCompatActivity {
                 binding.btnSigin.setVisibility(View.INVISIBLE);
             }
         });
-
-        // Configure sign-in to request the user's ID, email address, and basic
-        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-        // Build a GoogleSignInClient with the options specified by gso.
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
-        // Set the dimensions of the sign-in button.
-        Button signInButton = findViewById(R.id.btnGoogleAuth);
-        signInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signIn();
-            }
-        });
-
     }
 
     private void signIn() {

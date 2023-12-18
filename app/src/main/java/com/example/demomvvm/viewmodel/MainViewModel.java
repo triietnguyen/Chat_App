@@ -24,8 +24,6 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.List;
-
-// MainViewModel.java
 public class MainViewModel extends ViewModel {
 
     public void handleProfileImageClick(Context context) {

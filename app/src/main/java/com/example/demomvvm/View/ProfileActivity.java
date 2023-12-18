@@ -10,12 +10,16 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.demomvvm.R;
 import com.example.demomvvm.databinding.ActivityMainBinding;
 import com.example.demomvvm.databinding.ActivityProfileBinding;
 import com.example.demomvvm.utilities.Constants;
 import com.example.demomvvm.utilities.PreferenceManager;
+import com.example.demomvvm.viewmodel.ProfileViewModel;
+import com.example.demomvvm.viewmodel.SignUpViewModel;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -31,12 +35,15 @@ public class ProfileActivity extends AppCompatActivity {
     GoogleSignInClient mGoogleSignInClient;
     private PreferenceManager preferenceManager;
     private ActivityProfileBinding binding;
+    private ProfileViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityProfileBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        viewModel = new ViewModelProvider(this).get(ProfileViewModel.class);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_profile);
+        binding.setProfileViewModel(viewModel);
+        binding.setLifecycleOwner(this);
         preferenceManager = new PreferenceManager(getApplicationContext());
 
         // Configure sign-in to request the user's ID, email address, and basic
@@ -92,13 +99,5 @@ public class ProfileActivity extends AppCompatActivity {
                 signOut();
             }
         });
-        binding.imageBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                finish();
-            }
-        }
-        );
     }
 }

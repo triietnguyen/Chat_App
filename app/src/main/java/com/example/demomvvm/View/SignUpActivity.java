@@ -44,6 +44,10 @@ public class SignUpActivity extends AppCompatActivity {
         binding.setSignUpViewModel(viewModel);
         binding.setLifecycleOwner(this);
         preferenceManager = new PreferenceManager(getApplicationContext());
+        LiveData();
+        setListeners();
+    }
+    private void LiveData(){
         // Theo dõi LiveData để cập nhật trạng thái của ProgressBar
         viewModel.getProgressBarVisible().observe(this, isVisible -> {
             if (isVisible) {
@@ -61,9 +65,7 @@ public class SignUpActivity extends AppCompatActivity {
                 binding.btnSignup.setVisibility(View.INVISIBLE);
             }
         });
-        setListeners();
     }
-
     private void setListeners() {
         binding.btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
