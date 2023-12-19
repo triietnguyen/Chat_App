@@ -1,15 +1,22 @@
 package com.example.demomvvm.View;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.example.demomvvm.Model.User;
+import com.example.demomvvm.R;
 import com.example.demomvvm.adapters.UsersAdapter;
 import com.example.demomvvm.databinding.ActivityUsersBinding;
 import com.example.demomvvm.listeners.UserListener;
 import com.example.demomvvm.utilities.Constants;
 import com.example.demomvvm.utilities.PreferenceManager;
+import com.example.demomvvm.viewmodel.SignUpViewModel;
+import com.example.demomvvm.viewmodel.UsersViewModel;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -17,19 +24,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UsersActivity extends BaseActivity implements UserListener {
+    private UsersViewModel viewModel;
     private ActivityUsersBinding binding;
     private PreferenceManager preferenceManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityUsersBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        viewModel = new ViewModelProvider(this).get(UsersViewModel.class);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_users);
+        binding.setUsersViewModel(viewModel);
+        binding.setLifecycleOwner(this);
         preferenceManager = new PreferenceManager(getApplicationContext());
-        setListeners();
         getUser();
-    }
-    private void setListeners(){
-        binding.imageBack.setOnClickListener(v -> onBackPressed());
     }
     private void getUser(){
         loading(true);
